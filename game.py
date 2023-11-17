@@ -6,11 +6,11 @@ class Square:
         self.square_id = square_id
 
         self.createSquare()
-    
+
     def createSquare(self):
 
         self.square = [['X', 'X', 'X'], ['X', 'X', 'X'], ['X', 'X', 'X']]
-        
+
         return self.square
 
     def printSquare(self):
@@ -25,7 +25,7 @@ class Square:
     def insertNum(self, x_pos, y_pos, num):
 
         self.square[y_pos-1][x_pos-1] = num
-    
+
     def checkSquareIllegalNum(self):
 
         num_count = {'1':0, '2':0, '3':0, '4':0, '5':0, '6':0, '7':0, '8':0, '9':0}
@@ -35,7 +35,7 @@ class Square:
                 num_count[num] = num_count.get(num) + row.count(num)
             if num_count.get(num) > 1:
                 return False
-        
+
         return True
 
 class Board:
@@ -60,9 +60,9 @@ class Board:
         self.board = [[self.square_1, self.square_2, self.square_3], [self.square_4, self.square_5, self.square_6], [self.square_7, self.square_8, self.square_9]]
 
         return self.board
-    
+
     def insertToBoard(self, x_pos, y_pos, num):
-        
+
         x_dict = {1:1, 2:2, 3:3, 4:1, 5:2, 6:3, 7:1, 8:2, 9:3}
         y_dict = {1:1, 2:2, 3:3, 4:1, 5:2, 6:3, 7:1, 8:2, 9:3}
 
@@ -87,7 +87,7 @@ class Board:
                 self.square_8.insertNum(x_dict.get(x_pos), y_dict.get(y_pos), num)
             elif x_pos > 6 and x_pos <= 9:
                 self.square_9.insertNum(x_dict.get(x_pos), y_dict.get(y_pos), num)
-    
+
     def printBoard(self):
 
         for squares in range(0, len(self.board)):
@@ -99,24 +99,24 @@ class Board:
                         print(*self.board[squares][square].square[row], end=' | ')
                 if row == 2 and squares != 2:
                     print('- '*11)
-        
+
         print('')
         print('- '*11)
         print('')
-    
+
     def checkIllegalNum(self):
 
         if self.checkCol() and self.checkRow() and self.checkSquare():
             return True
         else:
             return False
-    
+
     def checkSquare(self):
         for rows in self.board:
             for square in range(0, len(rows)):
                 if rows[square].checkSquareIllegalNum() == False:
                     return False
-                
+
         return True
 
     def checkRow(self):
@@ -170,13 +170,12 @@ class Board:
                     for x in rows:
                         if x == 'X':
                             is_board_complete = False
-        
-        if is_board_complete == True:
-            if self.checkIllegalNum() == True:
-                win = True
+
+        if is_board_complete and self.checkIllegalNum() == True:
+            win = True
 
         return win
-    
+
     def getValueAtCoord(self, x_pos, y_pos):
         x_dict = {1:1, 2:2, 3:3, 4:1, 5:2, 6:3, 7:1, 8:2, 9:3}
         y_dict = {1:1, 2:2, 3:3, 4:1, 5:2, 6:3, 7:1, 8:2, 9:3}
@@ -210,11 +209,11 @@ class Board:
                     for num in range(1, 10):
                         if self.checkIllegalNum():
                             self.insertToBoard(x, y, str(num))
-                            if self.solve():
+                            if self.solve() and self.checkWin():
                                 return True
                             self.insertToBoard(x, y, 'X')
                     return False
-        
+
         return True
 
 
@@ -258,7 +257,7 @@ def createBoard():
     board.insertToBoard(2, 9, '8')
     board.insertToBoard(5, 9, '9')
     board.insertToBoard(7, 9, '6')
-    #board.insertToBoard(9, 9, '1')
+    board.insertToBoard(9, 9, '1')
 
     #print(board.getValueAtCoord(8, 7))
     board.printBoard()
