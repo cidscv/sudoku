@@ -77,21 +77,11 @@ class Board:
             elif x_pos > 6 and x_pos <= 9:
                 return self.square_9.getPos(x_dict.get(x_pos), y_dict.get(y_pos))
 
-    def printBoard(self):
+    def printBoard(self, layout):
 
-        for squares in range(0, len(self.board)):
-            for row in range(0, 3):
-                for square in range(0, len(self.board[squares])):
-                    if square == 2:
-                        print(*self.board[squares][square].square[row])
-                    else:
-                        print(*self.board[squares][square].square[row], end=' | ')
-                if row == 2 and squares != 2:
-                    print('- '*11)
-
-        print('')
-        print('- '*11)
-        print('')
+        for x in self.board:
+            for y in self.board[x]:
+                self.layout.addWidget(self.board[x][y], x, y)
 
     def checkIllegalNum(self):
 

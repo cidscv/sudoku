@@ -1,16 +1,25 @@
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QGridLayout, QFrame
+
 class Square:
 
     def __init__(self, square_id):
         self.square = []
         self.square_id = square_id
 
-        self.createSquare()
+        cell = QLineEdit()
+        cell.setFixedWidth(30)
+        cell.setMaxLength(1)
+        cell.setAlignment(Qt.AlignCenter)
+        cell.textChanged.connect(self.check_input)
 
-    def createSquare(self):
+        self.createSquare(cell)
 
-        self.square = [['X', 'X', 'X'],
-                       ['X', 'X', 'X'],
-                       ['X', 'X', 'X']]
+    def createSquare(self, cell):
+
+        self.square = [[cell, cell, cell],
+                       [cell, cell, cell],
+                       [cell, cell, cell]]
 
     def printSquare(self):
 
@@ -24,6 +33,14 @@ class Square:
     def insertNum(self, x_pos, y_pos, num):
 
         self.square[y_pos-1][x_pos-1] = num
+
+    def check_input(self):
+        sender = self.sender()
+        text = sender.text()
+        if not text.isdigit():
+            sender.setText("")
+        elif int(text) < 1 or int(text) > 9:
+            sender.setText("")
 
     def checkSquareIllegalNum(self):
 
